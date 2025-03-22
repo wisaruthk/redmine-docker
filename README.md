@@ -21,8 +21,9 @@ Open Source และฟรี – ไม่มีค่าใช้จ่าย
 ---
 
 # สำหรับการเข้าใช้เมื่อติดตั้งครั้งแรก
-1. **Username/Password:** `admin/admin`
-2. ต้องเข้าไปกด initial default Role ในหน้าจอ Admin นะครับ
+1. เมื่อติดตั้งเสร็จเข้าระบบด้วย url: http://localhost:8090/
+2. **Username/Password:** `admin/admin`
+3. ต้องเข้าไปกด initial default Role ในหน้าจอ Admin นะครับ
 
 ---
 
