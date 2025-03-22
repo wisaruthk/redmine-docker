@@ -1,0 +1,57 @@
+version: '3.1'
+
+services:
+
+  redmine:
+    image: redmine:6.0.4-alpine
+    restart: always
+    ports:
+      - 9090:3000
+    volumes:
+      - ./redmine/files:/usr/src/redmine/files
+      - ./redmine/plugins:/usr/src/redmine/plugins
+    environment:
+      REDMINE_DB_MYSQL: db
+      REDMINE_DB_PASSWORD: changeme@123
+      REDMINE_SECRET_KEY_BASE: changeme_secret_key_base
+      REDMINE_DB_ENCODING: utf8
+      REDMINE_DB_DATABASE: redmine
+    networks:
+      - redmine_network
+
+  nginx:
+    restart: always
+    image: nginx:stable-alpine
+    ports:
+      - "8090:80"
+    links:
+      - redmine
+    volumes:
+      - ./config/nginx/vhost.conf:/etc/nginx/conf.d/default.conf
+      - ./log/nginx:/var/log/nginx
+      - ./redmine:/var/app/01-redmine/redmine
+    networks:
+      - redmine_network
+  db:
+    platform: linux/x86_64
+    image: mysql:5.7
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci 
+    restart: always
+    
+    environment:
+      MYSQL_ROOT_PASSWORD: changeme@123
+      MYSQL_DATABASE: redmine
+    networks:
+      - redmine_network
+  
+  adminer:
+    image: adminer:5.0.6
+    restart: always
+    ports:
+      - 8060:8080
+    networks:
+      - redmine_network
+
+networks:
+  redmine_network:
+    driver: bridge
